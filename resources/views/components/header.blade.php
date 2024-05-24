@@ -1,11 +1,11 @@
 <head>
     <meta charset="utf-8">
-    <title>SurfsideMedia - Online Service Provider for your House Needs</title>
+    <title>EliteHomeCare - Online Service Provider for your House Needs</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{{asset('assets/img/favicon.png')}}">
+    <link rel="shortcut icon" href="{{asset('images/rsz_1rsz_1rsz_1rsz_1image_1.png')}}">
     <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" media="screen">
     <link href="{{asset('assets/css/chblue.css')}}" rel="stylesheet" media="screen">
     <link href="{{asset('assets/css/theme-responsive.css')}}" rel="stylesheet" media="screen">

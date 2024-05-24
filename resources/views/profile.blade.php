@@ -57,27 +57,28 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($bookings as $booking)
-                                            @if(Auth::user() && Auth::user()->id == $booking->user_id)
-                                                <tr>
-                                                    <td>{{ $booking->id }}</td>
-                                                    <td>{{ $booking->service_category }}</td>
-                                                    <td>{{ $booking->service_name }}</td>
-                                                    <td>{{ $booking->customer_date }}</td>
-                                                    <td>{{ $booking->customer_time }}</td>
-                                                    <td>{{ $booking->service_price }}</td>
-                                                    <td>
-                                                        @if($booking->featured)
-                                                            <a href="{{ route('Sproviderprofile', ['id' => $booking->service_provider_id]) }}">
-                                                                <i class="fa fa-user fa-2x text-primary"></i>
-                                                            </a>
-                                                        @else
-                                                            <span class="text-warning">pending</span>
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @endforeach
+                                    @foreach($bookings as $booking)
+    @if(session()->has('user_id') && session('user_id') == $booking->user_id)
+        <tr>
+            <td>{{ $booking->id }}</td>
+            <td>{{ $booking->service_category }}</td>
+            <td>{{ $booking->service_name }}</td>
+            <td>{{ $booking->customer_date }}</td>
+            <td>{{ $booking->customer_time }}</td>
+            <td>{{ $booking->service_price }}</td>
+            <td>
+                @if($booking->featured)
+                    <a href="{{ route('Sproviderprofile', ['id' => $booking->service_provider_id]) }}">
+                        <i class="fa fa-user fa-2x text-primary"></i>
+                    </a>
+                @else
+                    <span class="text-warning">pending</span>
+                @endif
+            </td>
+        </tr>
+    @endif
+@endforeach
+
                                     </tbody>
                                 </table>
                             </div>

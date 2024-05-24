@@ -22,7 +22,8 @@ Route::get('register', [AuthController::class, 'register'])->name('register');
 Route::POST('register', [AuthController::class, 'registerSave'])->name('register.save');
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::POST('login', [AuthController::class, 'loginAction'])->name('login.action');
-Route::get('logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+
 
 Route::get('ServiceCatagories', [ServiceCatagoryController::class, 'Service'])->name('ServiceCatagories');
 Route::get('/service-catagories', [ServiceCatagoryController::class, 'Service']);
@@ -41,8 +42,8 @@ Route::get('/about', [SearchController::class, 'index'])->name('about');
 Route::group(['middleware'=>'user'],function (){
 
 Route::get('/home1', [home1controller::class, 'index'])->name('home1');
+Route::post('/create-payment-intent', [BookingController::class, 'createPaymentIntent'])->name('create-payment-intent');
 Route::post('/save-booking', [BookingController::class, 'saveBooking'])->name('save.booking');
-//Route::post('/confirmation', [BookingController::class, 'saveBooking'])->name('confirmation');
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 Route::get('/confirmation', function () {
     return view('confirmation');

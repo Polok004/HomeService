@@ -1,23 +1,13 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB; 
 
 class AuthController extends Controller
 {
-
-    public function __construct()
-    {
-       // $this->middleware('guest')->except('logout');
-    }
     public function register()
     {
         return view('auth.register');
@@ -27,7 +17,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'phone' => 'required',
             'password' => 'required|confirmed',
         ]);
@@ -36,8 +26,8 @@ class AuthController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->password = Hash::make($request->password); // Ensure password is hashed using Bcrypt
-        $user->type = 0;
+        $user->password = Hash::make($request->password); // Ensure password is hashed
+        $user->type = 0; // Default user type
         $user->save();
 
         return redirect()->route('login');
@@ -55,33 +45,37 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            $this->createUserSession($user);
+            return $user->type == 'admin' ? redirect()->route('ownerProfile') : redirect()->route('user.profile');
         }
 
-        $request->session()->regenerate();
-
-        if (auth()->user()->type == 'admin') {
-            return redirect()->route('ownerProfile'); // Change admin.home1 to admin.home1
-        } else {
-           // Auth::logout();
-            return redirect()->route('user.profile');
-        }
-        
-        
-         
+        return back()->withErrors(['email' => trans('auth.failed')]);
     }
 
     public function logout(Request $request)
     {
-        Auth::guard('web')->logout();
- 
-        $request->session()->invalidate();
- 
+        Session::forget('user_id'); // Remove user ID from session
+        Session::forget('user_type'); // Remove user type from session
+        Session::forget('name'); 
+        Session::forget('phone'); 
+        Session::forget('email'); 
         return redirect('/login');
     }
+    
+    public function createUserSession(User $user)
+    {
+        Session::put('user_id', $user->id);
+        Session::put('user_type', $user->type);
+        Session::put('name', $user->name);
+        Session::put('phone', $user->phone);
+        Session::put('email', $user->email);
+    }
+
+    
+
     public function index(){
         $scatagories = DB::table('service_catagories')->inRandomOrder()->take(20)->get();
         $fservices = DB::table('services')

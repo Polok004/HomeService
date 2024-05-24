@@ -37,7 +37,7 @@
 
                 <ul class="collapse">
                     <li class="title">
-                        <a href="/" ><img src="{{asset('images/logo.png')}}" width="30" ></a>
+                        <a href="/" ><img src="{{asset('images/rsz_1rsz_1rsz_1image_1 (1).png')}}" width="30" ></a>
                     </li>
                     <li> <a href="/" >Home </a>
                        
@@ -54,14 +54,12 @@
                     </li>
                   
 
-
-    @if (Route::has('login'))
-    @auth
+  @if (Route::has('login'))
+    @if (session()->has('user_id'))
     <li style="margin-right: 20px;" class="login-form">
-        <a href="#" title="Register" >{{ Auth::user()->name }}  ( {{ Auth::user()->type }} ) </a>
+        <a href="#" title="Register">{{ session('name') }} ( {{ session('user_type') }} ) </a>
         <ul class="drop-down one-column hover-fade">
-            
-            @if( Auth::user()->type  =='admin')
+            @if(session('user_type') == 'admin')
             <li><a href="{{ route('ownerProfile') }}">Profile</a></li>
             <li><a href="{{ route('dashboard') }}">Service Categories</a></li>
             <li><a href="{{ route('allServices') }}">All Services</a></li>
@@ -69,23 +67,19 @@
             <li><a href="{{ route('admin_slider') }}">Manage Slider</a></li>
             <li><a href="{{ route('messages') }}">My Messages</a></li>
             <li><a href="{{ route('SproviderDetails') }}">Service Providers</a></li>
-            @elseif( Auth::user()->type  =='user')
-            <li><a href="{{ route('user.profile') }}" >Profile</a></li>
+            @elseif(session('user_type') == 'user')
+            <li><a href="{{ route('user.profile') }}">Profile</a></li>
             <li><a href="{{ route('profile') }}">My bookings</a></li>
             @endif
-            <li><a href="{{ url('/logout') }}">Logout</a></li>
+            <li><a href="{{ route('logout') }}">Logout</a></li>
         </ul>
     </li>
-
-
     @else
-
-    <li class="login-form"> <a href="{{route('register')}}" title="Register">Register</a></li>
-    <li class="login-form"> <a href="{{route('login')}}" title="Login">Login</a></li>
-    @endauth
+    <li class="login-form"> <a href="{{ route('register') }}" title="Register">Register</a></li>
+    <li class="login-form"> <a href="{{ route('login') }}" title="Login">Login</a></li>
+    @endif
 @endif
-
-                    <li class="search-bar">
+                <li class="search-bar">
                     </li>
                 </ul>
             </nav>

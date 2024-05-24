@@ -30,17 +30,17 @@
                                 <aside>
                                     <h4>The Office</h4>
                                     <address>
-                                        <strong>SurfsideMedia Home Services.</strong><br>
-                                        <i class="fa fa-map-marker"></i><strong>Address: </strong>Faridabad, Haryana,
-                                        India<br>
-                                        <i class="fa fa-phone"></i><strong>Phone: </strong> +91-1234567890
+                                        <strong>Elite Home Care.</strong><br>
+                                        <i class="fa fa-map-marker"></i><strong>Address: </strong>Teligati,Khulna
+                                        <br>
+                                        <i class="fa fa-phone"></i><strong>Phone: </strong> +088 123 456 789<br>
                                     </address>
                                     <address>
-                                        <strong>SurfsideMedia Emails</strong><br>
+                                        <strong>Elite Home Care Emails</strong><br>
                                         <i class="fa fa-envelope"></i><strong>Email:</strong><a
-                                            href="mailto:contact@surfsidemedia.in"> contact@surfsidemedia.in</a><br>
+                                            href="mailto:polok2007004@gmail.com"> polok2007004@gmail.com</a><br>
                                         <i class="fa fa-envelope"></i><strong>Email:</strong><a
-                                            href="mailto:support@surfsidemedia.in"> support@surfsidemedia.in</a>
+                                            href="mailto:shoumik87@gmail.com"> shoumik87@gmail.com</a>
                                     </address>
                                 </aside>
                                 <hr class="tall">
@@ -86,21 +86,7 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript">
-            function initAutocomplete() {
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    center: {
-                        lat: 19.0760,
-                        lng: 72.8777
-                    },
-                    zoom: 13
-                });
-                var input = document.getElementById('autocomplete');
-                var autocomplete = new google.maps.places.Autocomplete(input);
-            }
-        </script>
-        <script src="maps/api/js?key=AIzaSyDUivMJTPZn0DVMCnTmeOxPEAC6kSuplwU&libraries=places&callback=initAutocomplete"
-            async="" defer=""></script>
+       
 
 
 @endsection

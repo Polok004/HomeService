@@ -85,36 +85,30 @@
                                             <td>1</td>
                                         </tr>
                                         <tr>
-                                        
                                             <td>Status</td>
-                                            @if($service->status)
-                                            <td > Active</td>
-                                            @else
-                                            <td > Inactive</td>
-                                            @endif
+                                            <td>{{ $service->status ? 'Active' : 'Inactive' }}</td>
                                         </tr>
-                                        <tr>
                                         @php
                                             $total = $service->price;
                                         @endphp
                                         @if($service->discount)
                                             @if($service->discount_type=='fixed')
-                                        <tr>
-                                            <td>Discount</td>
-                                            <td>${{$service->discount}}</td>
-                                        </tr>
-                                        @php
-                                            $total -= $service->discount;
-                                        @endphp
-                                        @elseif($service->discount_type=='percent')
-                                        <tr>
-                                            <td>Discount</td>
-                                            <td>${{$service->discount}}%</td>
-                                            @php
-                                            $total -= ($total * $service->discount / 100);
-                                        @endphp
-                                        </tr>
-                                        @endif
+                                                <tr>
+                                                    <td>Discount</td>
+                                                    <td>${{$service->discount}}</td>
+                                                </tr>
+                                                @php
+                                                    $total -= $service->discount;
+                                                @endphp
+                                            @elseif($service->discount_type=='percent')
+                                                <tr>
+                                                    <td>Discount</td>
+                                                    <td>${{$service->discount}}%</td>
+                                                    @php
+                                                        $total -= ($total * $service->discount / 100);
+                                                    @endphp
+                                                </tr>
+                                            @endif
                                         @endif
                                         <tr>
                                             <td>Total</td>
@@ -122,47 +116,35 @@
                                         </tr>
                                         <tr>
                                             <td colspan="2">
-                                                @auth
+                                                @if(session()->has('user_id'))
                                                 <button type="button" class="btn btn-primary" onclick="toggleBookingForm()">Book Now</button>
                                                 <div id="bookingForm" style="display: none;">
-                                                    <form class="px-4 py-3" id="bookingForm"  method="post" action="{{ route('save.booking') }}" enctype="multipart/form-data">
+                                                <form id="payment-form" method="post" action="{{ route('save.booking') }}">
+    @csrf
+    <div class="form-group">
+        <label for="location">Location</label>
+        <input type="text" class="form-control" id="location" name="location" placeholder="Location">
+    </div>
+    <div class="form-group">
+        <label for="card-element">Card</label>
+        <div id="card-element" class="form-control"></div>
+        <div id="card-errors" role="alert"></div>
+    </div>
+    <div class="form-group">
+        <label for="date">Date</label>
+        <input type="date" class="form-control" id="date" name="date" placeholder="Date">
+    </div>
+    <div class="form-group">
+        <label for="time">Time</label>
+        <input type="time" class="form-control" id="time" name="time" placeholder="Time">
+    </div>
+    <button type="submit" class="btn btn-primary">Book</button>
+</form>
 
-                                                        @csrf
-                                                        <div class="form-group">
-                                                            <label for="location">Location</label>
-                                                            <input type="text" class="form-control" id="location" name="location" placeholder="Location">
-                                                        </div>
-                                                        <div class="form-group">
-    <label for="cardNumber">Card Number</label>
-    <div id="cardNumber" class="form-control"></div>
-    <input type="text" id="cardNumberInput" class="form-control" placeholder="Enter card number">
-</div>
-<div class="form-group">
-    <label for="cardExpiry">Expiration Date</label>
-    <div id="cardExpiry" class="form-control"></div>
-    <input type="text" id="cardExpiryInput" class="form-control" placeholder="MM/YY">
-</div>
-<div class="form-group">
-    <label for="cardCvc">CVC</label>
-    <div id="cardCvc" class="form-control"></div>
-    <input type="text" id="cardCvcInput" class="form-control" placeholder="Enter CVC">
-</div>
-
-                                                        <div class="form-group">
-                                                            <label for="date">Date</label>
-                                                            <input type="date" class="form-control" id="date" name="date" placeholder="Date">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="time">Time</label>
-                                                            <input type="time" class="form-control" id="time" name="time" placeholder="Time">
-                                                        </div>
-                                                        <button type="submit" class="btn btn-primary" >Book</button>
-                                                        
-                                                    </form>
                                                 </div>
                                                 @else
                                                 <a href="{{ route('login') }}" class="btn btn-primary">Login to Book</a>
-                                                @endauth
+                                                @endif
                                             </td>
                                         </tr>
                                     </table>
@@ -171,23 +153,23 @@
                         </aside>
                         <aside>
                             @if($r_service)
-                            <h3>Related Service</h3>
-                            <div class="col-md-12 col-sm-6 col-xs-12 bg-dark color-white padding-top-mini" style="max-width: 360px">
-                                <a href="{{route('serviceDetails',['service_slug'=> $r_service->slug])}}">
-                                    <div class="img-hover">
-                                        <img src="{{ asset('images/services/thumbnails')}}/{{$r_service->thumbnail}}" class="img-responsive" alt="{{$r_service->name}}">
-                                    </div>
-                                    <div class="info-gallery">
-                                        <h3>{{$r_service->name}}</h3>
-                                        <hr class="separator">
-                                        <p>{{$r_service->name}}</p>
-                                        <div class="content-btn">
-                                            <a href="{{route('serviceDetails',['service_slug'=> $r_service->slug])}}" class="btn btn-warning">View Details</a>
+                                <h3>Related Service</h3>
+                                <div class="col-md-12 col-sm-6 col-xs-12 bg-dark color-white padding-top-mini" style="max-width: 360px">
+                                    <a href="{{route('serviceDetails',['service_slug'=> $r_service->slug])}}">
+                                        <div class="img-hover">
+                                            <img src="{{ asset('images/services/thumbnails')}}/{{$r_service->thumbnail}}" class="img-responsive" alt="{{$r_service->name}}">
                                         </div>
-                                        <div class="price"><span>&#36;</span><b>From</b>{{$r_service->price}}</div>
-                                    </div>
-                                </a>
-                            </div>
+                                        <div class="info-gallery">
+                                            <h3>{{$r_service->name}}</h3>
+                                            <hr class="separator">
+                                            <p>{{$r_service->name}}</p>
+                                            <div class="content-btn">
+                                                <a href="{{route('serviceDetails',['service_slug'=> $r_service->slug])}}" class="btn btn-warning">View Details</a>
+                                            </div>
+                                            <div class="price"><span>&#36;</span><b>From</b>{{$r_service->price}}</div>
+                                        </div>
+                                    </a>
+                                </div>
                             @endif
                         </aside>
                     </div>
@@ -197,86 +179,66 @@
     </div>            
 </section>
 
-
+<script src="https://js.stripe.com/v3/"></script>
 <script>
-    var stripe = Stripe('pk_test_51PG0bY0442N1k1LoZNX2HRHy5Kos8UW6qmrhCTqs5UnsyaRBD3i96hcP5GPIGDBGeqUIpCNwZxY3PYqkyEHPpZ0u00X7h8OZel');
-    var elements = stripe.elements();
+    const stripe = Stripe('{{ env('STRIPE_PUBLIC_KEY') }}');
+    const elements = stripe.elements();
+    const cardElement = elements.create('card');
+    cardElement.mount('#card-element');
 
-var style = {
-    base: {
-        color: '#32325d',
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: 'antialiased',
-        fontSize: '16px',
-        '::placeholder': {
-            color: '#aab7c4'
-        }
-    },
-    invalid: {
-        color: '#fa755a',
-        iconColor: '#fa755a'
+    function toggleBookingForm() {
+        var bookingForm = document.getElementById("bookingForm");
+        bookingForm.style.display = bookingForm.style.display === "none" ? "block" : "none";
     }
-};
 
-var cardNumber = elements.create('cardNumber', {
-    style: style,
-    placeholder: 'Enter card number'
-});
-cardNumber.mount('#cardNumber');
+    const form = document.getElementById('payment-form');
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        console.log('Form submitted');
 
-var cardExpiry = elements.create('cardExpiry', {
-    style: style,
-    placeholder: 'MM/YY'
-});
-cardExpiry.mount('#cardExpiry');
+        const { paymentMethod, error } = await stripe.createPaymentMethod('card', cardElement);
 
-var cardCvc = elements.create('cardCvc', {
-    style: style,
-    placeholder: 'Enter CVC'
-});
-cardCvc.mount('#cardCvc');
-
-function toggleBookingForm() {
-    var bookingForm = document.getElementById("bookingForm");
-    if (bookingForm.style.display === "none") {
-        bookingForm.style.display = "block";
-    } else {
-        bookingForm.style.display = "none";
-    }
-}
-
-document.getElementById('stripeForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    stripe.createToken(cardNumber).then(function(result) {
-        if (result.error) {
-            console.error(result.error.message);
+        if (error) {
+            console.error('Payment Method Error:', error);
+            document.getElementById('card-errors').textContent = error.message;
         } else {
-            if (result.token.card.brand === 'Visa') {
-                stripeTokenHandler(result.token);
+            console.log('Payment Method Created:', paymentMethod);
+
+            const response = await fetch('{{ route('create-payment-intent') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                body: JSON.stringify({
+                    payment_method: paymentMethod.id,
+                    service_id: '{{ $service->id }}'
+                }),
+            });
+
+            const paymentIntent = await response.json();
+            console.log('Payment Intent Response:', paymentIntent);
+
+            if (paymentIntent.error) {
+                console.error('Payment Intent Error:', paymentIntent.error);
+                document.getElementById('card-errors').textContent = paymentIntent.error;
             } else {
-                console.error('Only Visa cards are accepted.');
+                const result = await stripe.confirmCardPayment(paymentIntent.client_secret, {
+                    payment_method: paymentMethod.id,
+                });
+                console.log('Payment Confirmation Result:', result);
+
+                if (result.error) {
+                    console.error('Payment Confirmation Error:', result.error);
+                    document.getElementById('card-errors').textContent = result.error.message;
+                } else if (result.paymentIntent.status === 'succeeded') {
+                    console.log('Payment Succeeded');
+                    form.submit();
+                }
             }
         }
     });
-});
-
-function stripeTokenHandler(token) {
-    var form = document.getElementById('stripeForm');
-    var hiddenInput = document.createElement('input');
-    hiddenInput.setAttribute('type', 'hidden');
-    hiddenInput.setAttribute('name', 'stripeToken');
-    hiddenInput.setAttribute('value', token.id);
-    form.appendChild(hiddenInput);
-    form.submit();
-}
 </script>
-
-
-
-
-
-
 
 @endsection
 

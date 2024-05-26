@@ -52,6 +52,8 @@ Route::get('/inactive', function () {
     return view('inactive');
 })->name('inactive');
 Route::get('/user/profile', [ProfileController::class, 'userProfile'])->name('user.profile');
+Route::get('/cancel-booking/{id}', [BookingController::class, 'cancelBooking'])->name('cancelBooking');
+
 
 });
 

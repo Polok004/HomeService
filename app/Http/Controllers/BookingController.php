@@ -46,10 +46,19 @@ class BookingController extends Controller
         if (!$service) {
             return response()->json(['error' => 'Service not found'], 404);
         }
+
+        $total = $service->price;
+    if ($service->discount) {
+        if ($service->discount_type == 'fixed') {
+            $total -= $service->discount;
+        } elseif ($service->discount_type == 'percent') {
+            $total -= ($total * $service->discount / 100);
+        }
+    }
     
         try {
             $intent = \Stripe\PaymentIntent::create([
-                'amount' => $service->price * 100, // Amount in cents
+                'amount' => $total * 100, // Amount in cents
                 'currency' => 'usd',
                 'payment_method' => $request->payment_method,
                 'automatic_payment_methods' => [
@@ -84,6 +93,16 @@ class BookingController extends Controller
         if (!$service || !$service->status) {
             return redirect()->route('inactive')->with('failed', 'Service is unavailable');
         }
+
+        // Calculate the total after discount
+    $total = $service->price;
+    if ($service->discount) {
+        if ($service->discount_type == 'fixed') {
+            $total -= $service->discount;
+        } elseif ($service->discount_type == 'percent') {
+            $total -= ($total * $service->discount / 100);
+        }
+    }
     
         DB::table('operation')->insert([
             'user_id' => $user_id,
@@ -94,7 +113,7 @@ class BookingController extends Controller
             'customer_time' => $time,
             'service_id' => $service->id,
             'service_name' => $service->name,
-            'service_price' => $service->price,
+            'service_price' => $total,
             'service_category' => $service->category_name,
             'created_at' => now(),
             'updated_at' => now(),
@@ -102,5 +121,31 @@ class BookingController extends Controller
     
         return redirect()->route('confirmation')->with('success', 'Booking saved successfully!');
     }
+
+
+
+    public function cancelBooking($id)
+    {
+        // Find the booking by id
+        $booking = DB::table('operation')->where('id', $id)->first();
+        
+        if ($booking) {
+            // Check if the booking is pending (not provided by a service provider)
+            if (!$booking->service_provider_id) {
+                // Perform cancellation logic here
+                DB::table('operation')->where('id', $id)->delete();
+                
+                // Redirect or return a response as needed
+                return redirect()->back()->with('success', 'Booking canceled successfully.');
+            } else {
+                // If the booking is already provided by a service provider, it cannot be canceled
+                return redirect()->back()->with('error', 'This booking cannot be canceled as it has already been provided by a service provider.');
+            }
+        } else {
+            // If the booking with the given id does not exist, redirect with an error message
+            return redirect()->back()->with('error', 'Booking not found.');
+        }
+    }
     
+   
 }

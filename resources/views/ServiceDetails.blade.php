@@ -178,7 +178,6 @@
         </div>
     </div>            
 </section>
-
 <script src="https://js.stripe.com/v3/"></script>
 <script>
     const stripe = Stripe('{{ env('STRIPE_PUBLIC_KEY') }}');
@@ -190,6 +189,36 @@
         var bookingForm = document.getElementById("bookingForm");
         bookingForm.style.display = bookingForm.style.display === "none" ? "block" : "none";
     }
+
+    function setDateAndTimeRestrictions() {
+        const today = new Date();
+        const dateInput = document.getElementById('date');
+        const timeInput = document.getElementById('time');
+        
+        // Set minimum date to today
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months start from 0
+        const dd = String(today.getDate()).padStart(2, '0');
+        
+        const minDate = `${yyyy}-${mm}-${dd}`;
+        dateInput.setAttribute('min', minDate);
+
+        // Event listener for date change to adjust the time input
+        dateInput.addEventListener('change', function() {
+            if (dateInput.value === minDate) {
+                const hh = String(today.getHours()).padStart(2, '0');
+                const min = String(today.getMinutes()).padStart(2, '0');
+                const minTime = `${hh}:${min}`;
+                timeInput.setAttribute('min', minTime);
+            } else {
+                timeInput.removeAttribute('min');
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        setDateAndTimeRestrictions();
+    });
 
     const form = document.getElementById('payment-form');
     form.addEventListener('submit', async (event) => {
@@ -239,6 +268,7 @@
         }
     });
 </script>
+
 
 @endsection
 

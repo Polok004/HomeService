@@ -23,11 +23,15 @@ class ProfileController extends Controller
     }
 
     public function booked()
-    {
-        $bookings = DB::table('operation')->paginate(10);
+{
+    // Fetch bookings sorted by 'created_at' in descending order using Query Builder
+    $bookings = DB::table('operation')
+                  ->orderBy('created_at', 'desc')
+                  ->paginate(10); // Adjust the pagination as needed
 
-        return view('bookedService', ['bookings' => $bookings]);
-    }
+    return view('bookedService', ['bookings' => $bookings]);
+}
+
 
     public function showDetails($id)
     {

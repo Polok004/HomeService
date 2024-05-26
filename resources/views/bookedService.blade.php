@@ -15,12 +15,12 @@
     <div class="bg_parallax image_02_parallax"></div>
     <div class="opacy_bg_02">
         <div class="container">
-            <h1>Service Categories</h1>
+            <h1>Service Requests</h1>
             <div class="crumbs">
                 <ul>
                     <li><a href="/">Home</a></li>
                     <li>/</li>
-                    <li>Service Categories</li>
+                    <li>Service Requests</li>
                 </ul>
             </div>
         </div>
@@ -36,7 +36,7 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        All Service Category
+                                         Service Request
                                     </div>
                                     <div class="col-md-6">
                                         

@@ -6,12 +6,12 @@
     <div class="bg_parallax image_02_parallax"></div>
     <div class="opacy_bg_02">
         <div class="container">
-            <h1>Edit Service</h1>
+            <h1>Edit Service Requests</h1>
             <div class="crumbs">
                 <ul>
                     <li><a href="/">Home</a></li>
                     <li>/</li>
-                    <li>Edit Service</li>
+                    <li>Edit Service Requests</li>
                 </ul>
             </div>
         </div>
@@ -27,10 +27,10 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        Edit Service
+                                        Edit Service Requests
                                     </div>
                                     <div class="col-md-6">
-                                        <a href="#" class="btn btn-info pull-right">All Services</a>
+                                        <a href="{{route('bookService')}}" class="btn btn-info pull-right">All Service Requests</a>
                                     </div>
                                 </div>
                             </div>

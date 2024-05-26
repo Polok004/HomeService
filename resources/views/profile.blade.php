@@ -15,12 +15,12 @@
     <div class="bg_parallax image_02_parallax"></div>
     <div class="opacy_bg_02">
         <div class="container">
-            <h1>Service Categories</h1>
+            <h1>My Services </h1>
             <div class="crumbs">
                 <ul>
                     <li><a href="/">Home</a></li>
                     <li>/</li>
-                    <li>Service Categories</li>
+                    <li>My Services </li>
                 </ul>
             </div>
         </div>
@@ -36,7 +36,7 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        All Service Category
+                                        My Services 
                                     </div>
                                     <div class="col-md-6">
                                         <a href="{{ route('ServiceCatagories') }}" class="btn btn-info pull-right">Add new</a>
@@ -54,6 +54,7 @@
                                             <th>Service Time</th>
                                             <th>Price</th>
                                             <th>Service Provider</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -75,6 +76,11 @@
                     <span class="text-warning">pending</span>
                 @endif
             </td>
+            <td>
+                <a href="#" onclick="confirmCancellation({{ $booking->id }}, {{ $booking->service_provider_id ? 'true' : 'false' }})">
+                    <i class="fa fa-times fa-2x text-danger"></i>
+                </a>
+            </td>
         </tr>
     @endif
 @endforeach
@@ -89,4 +95,21 @@
         </div>
     </div>
 </section>
+<script>
+    function confirmCancellation(id, hasServiceProvider) {
+        if (hasServiceProvider) {
+            alert("Cancellation is not allowed because a service provider is assigned.");
+            return;
+        }
+
+        if (confirm("Are you sure you want to cancel this booking?")) {
+            // Perform deletion logic here
+            window.location.href = "{{ route('cancelBooking', ['id' => ':id']) }}".replace(':id', id);
+        } else {
+            // Display a cancellation message if the user cancels the action
+            alert("Cancellation cancelled.");
+        }
+    }
+</script>
+
 @endsection

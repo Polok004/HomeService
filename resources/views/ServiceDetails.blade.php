@@ -117,6 +117,9 @@
                                         <tr>
                                             <td colspan="2">
                                                 @if(session()->has('user_id'))
+                                                   @if(!$service->status)
+                                                        <a href="{{ route('inactive') }}" class="btn btn-primary">Book Now</a>
+                                                    @else
                                                 <button type="button" class="btn btn-primary" onclick="toggleBookingForm()">Book Now</button>
                                                 <div id="bookingForm" style="display: none;">
                                                 <form id="payment-form" method="post" action="{{ route('save.booking') }}">
@@ -142,6 +145,7 @@
 </form>
 
                                                 </div>
+                                                @endif  
                                                 @else
                                                 <a href="{{ route('login') }}" class="btn btn-primary">Login to Book</a>
                                                 @endif

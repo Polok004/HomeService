@@ -36,7 +36,7 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-md-6">
-                                         Service Request
+                                        All Service Category
                                     </div>
                                     <div class="col-md-6">
                                         

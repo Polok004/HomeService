@@ -82,7 +82,7 @@
                                                 <h4><b>Service Providers:</b> {{ $totalServiceProviders }}</h4>
                                                 <h4><b>Service Categories:</b> {{ $totalServiceCategories }}</h4>
                                                 <h4><b>Service:</b> {{ $totalServices }}</h4>
-                                                <h4><b>Salary(per month):</b> {{ $totalSalary }}</h4>
+                                                <h4><b>Salary:</b> {{ $totalSalary }}</h4>
                                                 <h4><b>Income:</b> {{ $totalIncome }}</h4>
                                             </div>
                                         </div>
@@ -125,16 +125,16 @@
     </div>
 </section>
 
-<!-- Chart.js -->
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- Script to render Income vs Expense Chart -->
+
 <script>
     const incomeExpenseChartCanvas = document.getElementById('incomeExpenseChart').getContext('2d');
     const incomeExpenseChartData = {
         labels: ['Income', 'Expense'],
         datasets: [{
             label: 'Income vs Expense',
-            data: [{{ $totalIncome }}, {{ $totalSalary }}], // Use the provided totalIncome and totalSalary
+            data: [{{ $totalIncome }}, {{ $totalSalary }}], 
             backgroundColor: ['#36a2eb', '#ff6384']
         }]
     };
@@ -144,7 +144,7 @@
         options: {
             legend: {
                 labels: {
-                    fontColor: 'yellow' // Change legend label color to yellow
+                    fontColor: 'yellow' 
                 }
             }
         }
@@ -153,7 +153,7 @@
 
 <!-- Script to render Service Categories Pie Chart -->
 <script>
-    // Function to generate random color
+    
     function getRandomColor() {
         const letters = '0123456789ABCDEF';
         let color = '#';
@@ -164,7 +164,7 @@
     }
 
     // Generate random colors for each service category
-    const serviceCategoriesColors = {!! json_encode(array_fill(0, count($serviceCategories), '#000000')) !!}; // Initialize with black colors
+    const serviceCategoriesColors = {!! json_encode(array_fill(0, count($serviceCategories), '#000000')) !!}; 
     for (let i = 0; i < serviceCategoriesColors.length; i++) {
         serviceCategoriesColors[i] = getRandomColor();
     }

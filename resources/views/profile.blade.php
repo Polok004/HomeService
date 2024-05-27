@@ -59,8 +59,8 @@
                                     </thead>
                                     <tbody>
                                     @foreach($bookings as $booking)
-    @if(session()->has('user_id') && session('user_id') == $booking->user_id)
-        <tr>
+                                         @if(session()->has('user_id') && session('user_id') == $booking->user_id)
+            <tr>
             <td>{{ $booking->id }}</td>
             <td>{{ $booking->service_category }}</td>
             <td>{{ $booking->service_name }}</td>
@@ -103,10 +103,8 @@
         }
 
         if (confirm("Are you sure you want to cancel this booking?")) {
-            // Perform deletion logic here
             window.location.href = "{{ route('cancelBooking', ['id' => ':id']) }}".replace(':id', id);
         } else {
-            // Display a cancellation message if the user cancels the action
             alert("Cancellation cancelled.");
         }
     }

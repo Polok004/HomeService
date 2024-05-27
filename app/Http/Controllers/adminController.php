@@ -37,7 +37,7 @@ class adminController extends Controller
 
         Session::flash('message', 'Category has been created successfully!');
         
-        return redirect()->back(); // Stay on the same page
+        return redirect()->back(); 
     }
 
     public function editCategory($category_id)
@@ -51,23 +51,23 @@ class adminController extends Controller
         $request->validate([
             'category_id' => 'required',
             'name' => 'required',
-            'image' => 'nullable|mimes:jpeg,png' // Update validation rule for image
+            'image' => 'nullable|mimes:jpeg,png' 
         ]);
 
-        // Generate slug from the name
+       
         $slug = $this->generateSlug($request->name);
 
-        // Update the category record in the database
+       
         DB::table('service_catagories')
             ->where('id', $request->category_id)
             ->update([
                 'name' => $request->name,
-                'slug' => $slug, // Update the slug
+                'slug' => $slug, 
                 'featured' => $request->featured ?? 0,
                 'updated_at' => Carbon::now(),
             ]);
 
-        // Check if a new image is provided and update it
+       
         if ($request->hasFile('image')) {
             $imageName = Carbon::now()->timestamp . '.' . $request->image->extension();
             $request->image->move(public_path('images/categories'), $imageName);
@@ -86,27 +86,26 @@ class adminController extends Controller
 //delete
 public function deleteCategory($category_id)
 {
-    // Find the category by ID
+   
     $category = DB::table('service_catagories')->where('id', $category_id)->first();
 
-    // Check if the category exists
+   
     if ($category) {
-        // Delete the category's image from storage
+        
         if (file_exists(public_path('images/categories/' . $category->image))) {
             unlink(public_path('images/categories/' . $category->image));
         }
 
-        // Delete the category record from the database
+       
         DB::table('service_catagories')->where('id', $category_id)->delete();
 
-        // Flash a success message
+ 
         Session::flash('message', 'Category has been deleted successfully!');
     } else {
-        // Flash an error message if category not found
+        
         Session::flash('error', 'Category not found!');
     }
 
-    // Redirect back to the page
     return redirect()->back();
 }
 

@@ -92,7 +92,7 @@
 <script>
     function confirmDelete(sliderId) {
         if (confirm('Are you sure you want to delete this slider?')) {
-            // If user confirms, redirect to the delete route
+           
             window.location.href = "{{ route('deleteSlider', ['id' => ':slider_id']) }}".replace(':slider_id', sliderId);
         }
     }

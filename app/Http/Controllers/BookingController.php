@@ -12,30 +12,24 @@ class BookingController extends Controller
 {
     public function showServiceDetails($service_slug)
     {
-        $service = DB::table('services')
-        ->join('service_catagories', 'services.service_category_id', '=', 'service_catagories.id')
-        ->select('services.*', 'service_catagories.name as category_name')
-        ->where('services.slug', $service_slug)
-        ->first();
+        $service = DB::table('services')->join('service_catagories', 'services.service_category_id', '=', 'service_catagories.id')
+        ->select('services.*', 'service_catagories.name as category_name')->where('services.slug', $service_slug)->first();
 
-    // Check if service exists
+    
     if (!$service) {
-        abort(404); // or return a custom error view
+        abort(404); 
     }
 
-    // Fetch a related service (assuming you have a similar structure)
     $r_service = DB::table('services')
         ->where('service_category_id', $service->service_category_id)
-        ->where('slug', '!=', $service_slug)
-        ->inRandomOrder()
-        ->first();
+        ->where('slug', '!=', $service_slug)->inRandomOrder()->first();
 
-    // Initialize total with the service price
+
     $total = $service->price;
     session(['service' => $service]);
 
     return view('serviceDetails', compact('service', 'r_service', 'total'));
-    }
+}
 
     public function createPaymentIntent(Request $request)
     {
@@ -58,7 +52,7 @@ class BookingController extends Controller
     
         try {
             $intent = \Stripe\PaymentIntent::create([
-                'amount' => $total * 100, // Amount in cents
+                'amount' => $total * 100, 
                 'currency' => 'usd',
                 'payment_method' => $request->payment_method,
                 'automatic_payment_methods' => [
@@ -94,7 +88,7 @@ class BookingController extends Controller
             return redirect()->route('inactive')->with('failed', 'Service is unavailable');
         }
 
-        // Calculate the total after discount
+       
     $total = $service->price;
     if ($service->discount) {
         if ($service->discount_type == 'fixed') {
@@ -126,26 +120,28 @@ class BookingController extends Controller
 
     public function cancelBooking($id)
     {
-        // Find the booking by id
+        
         $booking = DB::table('operation')->where('id', $id)->first();
         
         if ($booking) {
-            // Check if the booking is pending (not provided by a service provider)
+          
             if (!$booking->service_provider_id) {
-                // Perform cancellation logic here
+              
                 DB::table('operation')->where('id', $id)->delete();
-                
-                // Redirect or return a response as needed
                 return redirect()->back()->with('success', 'Booking canceled successfully.');
             } else {
-                // If the booking is already provided by a service provider, it cannot be canceled
+               
                 return redirect()->back()->with('error', 'This booking cannot be canceled as it has already been provided by a service provider.');
             }
         } else {
-            // If the booking with the given id does not exist, redirect with an error message
+
             return redirect()->back()->with('error', 'Booking not found.');
         }
     }
     
+    public function inactive()
+    {
+        return view('inactive');
+    }
    
 }

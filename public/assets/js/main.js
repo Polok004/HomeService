@@ -1,14 +1,7 @@
 // main.JS
 //--------------------------------------------------------------------------------------------------------------------------------
 //This is JS file that contains principal fuctions of theme */
-// -------------------------------------------------------------------------------------------------------------------------------
-// Template Name: Surfside Media Home Services.	
-// Autor: Surfside Media
-// Email: 
-// Name File: main.js
-// Version 1.0 - Created on 21 May 2021
-// Website:  
-// Copyright: (C) 2021
+
 
 $(document).ready(function($) {
 

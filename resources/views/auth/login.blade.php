@@ -58,20 +58,14 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-6">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="remember"> Remember Me
-                                            </label>
-                                        </div>
+                                        
                                     </div>
                                     <div class="col-md-4">
                                         <button type="submit" class="btn btn-primary pull-right">Login</button>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-0">
-                                    <div class="col-md-10">
-                                        <a class="" href="password/reset.html">Forgot Your Password?</a>
-                                    </div>
+                                   
                                 </div>
                             </form>
                         </div>

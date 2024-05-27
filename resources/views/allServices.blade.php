@@ -102,7 +102,6 @@
 <script>
     function confirmDelete(serviceId) {
         if (confirm('Are you sure you want to delete this service?')) {
-            // If user confirms, redirect to the delete route
             window.location.href = "{{ route('deleteService', ['service_id' => ':service_id']) }}".replace(':service_id', serviceId);
         }
     }

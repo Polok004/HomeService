@@ -26,8 +26,8 @@ class AuthController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->password = Hash::make($request->password); // Ensure password is hashed
-        $user->type = 0; // Default user type
+        $user->password = Hash::make($request->password); 
+        $user->type = 0; 
         $user->save();
 
         return redirect()->route('login');
@@ -57,8 +57,8 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        Session::forget('user_id'); // Remove user ID from session
-        Session::forget('user_type'); // Remove user type from session
+        Session::forget('user_id'); 
+        Session::forget('user_type'); 
         Session::forget('name'); 
         Session::forget('phone'); 
         Session::forget('email'); 
@@ -77,20 +77,17 @@ class AuthController extends Controller
     
 
     public function index(){
+        
         $scatagories = DB::table('service_catagories')->inRandomOrder()->take(20)->get();
-        $fservices = DB::table('services')
-         ->where('featured', true)
-        ->inRandomOrder()
-        ->take(8)
-        ->get();
-        $fscatagories = DB::table('service_catagories')
-         ->where('featured', true)
-        ->inRandomOrder()
-        ->take(8)
-        ->get();
-        $sid= DB::table('service_catagories')
-        ->whereIn('slug',['ac','water'])->get()->pluck('id');
+
+        $fservices = DB::table('services') ->where('featured', true) ->inRandomOrder()->take(8)->get();
+
+        $fscatagories = DB::table('service_catagories')->where('featured', true)->inRandomOrder()->take(8)->get();
+
+        $sid= DB::table('service_catagories')->pluck('id');
+
         $aservices= DB::table('services')->whereIn('service_category_id',$sid)->inRandomOrder()->take(8)->get();
+
         $slides=DB::table('sliders')->where('status',true)->get();
         
         return view('index', ['scatagories' => $scatagories, 'fservices' => $fservices, 'fscatagories' => $fscatagories, 'aservices' => $aservices, 'slides' => $slides]);

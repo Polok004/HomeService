@@ -92,7 +92,7 @@
 <script>
     function confirmDelete(categoryId) {
         if (confirm('Are you sure you want to delete this category?')) {
-            // If user confirms, redirect to the delete route
+            
             window.location.href = "{{ route('deleteCategory', ['category_id' => ':category_id']) }}".replace(':category_id', categoryId);
         }
     }

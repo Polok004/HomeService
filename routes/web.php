@@ -15,15 +15,14 @@ use App\Http\Controllers\contactController;
 use App\Http\Controllers\SproviderController;
 
 
-
+//index routes
 Route::get('/', [AuthController::class, 'index']);
-
 Route::get('register', [AuthController::class, 'register'])->name('register');
 Route::POST('register', [AuthController::class, 'registerSave'])->name('register.save');
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::POST('login', [AuthController::class, 'loginAction'])->name('login.action');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-
+//end index routes
 
 Route::get('ServiceCatagories', [ServiceCatagoryController::class, 'Service'])->name('ServiceCatagories');
 Route::get('/service-catagories', [ServiceCatagoryController::class, 'Service']);
@@ -35,26 +34,31 @@ Route::post('/searchService', [SearchController::class, 'searchService'])->name(
 
 Route::get('/contact', [contactController::class, 'index'])->name('contact');
 Route::post('/contact', [contactController::class, 'sendContactMail'])->name('sendContactMail');
-Route::get('/messages', [contactController::class, 'allMessages'])->name('messages');
+
 Route::get('/Sproviderprofile/{id}', [SproviderController::class, 'showSprovider'])->name('Sproviderprofile');
 Route::get('/about', [SearchController::class, 'index'])->name('about');
 //user
+
 Route::group(['middleware'=>'user'],function (){
 
-Route::get('/home1', [home1controller::class, 'index'])->name('home1');
+
 Route::post('/create-payment-intent', [BookingController::class, 'createPaymentIntent'])->name('create-payment-intent');
+
 Route::post('/save-booking', [BookingController::class, 'saveBooking'])->name('save.booking');
+
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+
 Route::get('/confirmation', function () {
     return view('confirmation');
 })->name('confirmation');
+
 Route::get('/inactive', function () {
     return view('inactive');
 })->name('inactive');
+
 Route::get('/user/profile', [ProfileController::class, 'userProfile'])->name('user.profile');
+Route::get('inactive', [BookingController::class, 'inactive'])->name('inactive');
 Route::get('/cancel-booking/{id}', [BookingController::class, 'cancelBooking'])->name('cancelBooking');
-
-
 });
 
 //admin
@@ -62,55 +66,73 @@ Route::group(['middleware'=>'admin'],function () {
   
     Route::get('/owner', [ProfileController::class, 'ownerProfile'])->name('ownerProfile');
     Route::get('/bookedService', [ProfileController::class, 'booked'])->name('bookService');
+//Service Categories
+    //category showss
     Route::get('/dashboard', [home1controller::class, 'adminHome'])->name('dashboard');
+    //new category add page
     Route::get('/addService', [home1controller::class, 'addServe'])->name('addService');
+    //new category add function page
     Route::post('/new-category', [adminController::class, 'newCategory'])->name('newCategory');
+    //edit category blade
     Route::get('/edit-service/{category_id}', [adminController::class, 'editCategory'])->name('editService');
+    //edit category 
     Route::post('/editService', [adminController::class, 'updateCategory'])->name('updateCategory');
+    //delete category
     Route::get('/deleteCategory/{category_id}', [adminController::class, 'deleteCategory'])->name('deleteCategory');
+//category end
+
+//service start
+    //all service page
     Route::get('/services', [ServiceCatagoryController::class, 'allServices'])->name('allServices');
+    //add service blade
     Route::get('/add AllService', [ServiceController::class, 'addNewServe'])->name('add AllService');
+    //add service 
     Route::post('/new-service', [ServiceController::class, 'storeNewService'])->name('newService');
-// Route for updating the service
+    //edit service blade
     Route::get('/editAllServices/{service_id}', [ServiceController::class, 'editAllService'])->name('editAllService');
-    
+    //edit service
     Route::post('/editAllServices', [ServiceController::class, 'updateService'])->name('updateAllService');
+    //delete service
     Route::get('/deleteService/{service_id}', [ServiceController::class, 'deleteService'])->name('deleteService');
-   
-    // Route to save booking
+//service ends
+//slider
+    //sliderpage
     Route::get('/admin_slider', [SliderController::class, 'index'])->name('admin_slider');
-    
-
+    //add slider blade
     Route::get('/addSlider', [SliderController::class, 'addNewSlider'])->name('addSlider');
+    //add slider
     Route::post('/new-slider', [SliderController::class, 'storeNewSlider'])->name('newSlider');
-
+    //edit slider blade
     Route::get('/edit-slide/{id}', [SliderController::class, 'editSlider'])->name('editSlide');
-Route::post('/update-slider', [SliderController::class, 'updateSlider'])->name('updateSlider');
+    //edit slider
+      Route::post('/update-slider', [SliderController::class, 'updateSlider'])->name('updateSlider');
+    //delete slider
+     Route::get('/delete-slider/{id}', [SliderController::class, 'deleteSlider'])->name('deleteSlider');
+//slider ends
 
-Route::get('/delete-slider/{id}', [SliderController::class, 'deleteSlider'])->name('deleteSlider');
-
-
+//sprovider 
+    //sprovider page
 Route::get('/SproviderDetails', [SproviderController::class, 'index'])->name('SproviderDetails');
-
-
-// Route to display the form for adding a new service provider
+    //add sprovider blade
 Route::get('/addSproviders', [SproviderController::class, 'addNewSprovider'])->name('addSproviders');
-
-// Route to store the new service provider data
+    //add sprovider
 Route::post('/storeSprovider', [SproviderController::class, 'storeNewSprovider'])->name('storeSprovider');
-
-
-// Route for displaying the form to edit a service provider
+    //edit sprovider blade
 Route::get('/edit-sproviders/{id}', [SproviderController::class, 'editSprovider'])->name('editSproviders');
-
-// Route for updating a service provider
+    //edit sprovider
 Route::post('/update-sprovider', [SproviderController::class, 'updateSprovider'])->name('updateSprovider');
-
+    //delete sprovider
 Route::get('/delete-sprovider/{id}', [SproviderController::class, 'deleteSprovider'])->name('deleteSprovider');
+//sprovider ends
 
-
-
+//booking
+    //booking page
 Route::get('/operationDetails/{id}', [ProfileController::class, 'showDetails'])->name('operationDetails');
+    //update booking
 Route::post('/operationDetails/{id}/update', [ProfileController::class, 'updateService'])->name('updateService');
-   
+
+//booking ends
+
+//contact
+Route::get('/messages', [contactController::class, 'allMessages'])->name('messages');
 });

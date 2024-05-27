@@ -66,8 +66,7 @@
             </div>
         </div>
     </div>
-    <div class="section-twitter content_resalt border-top">
-        <i class="fa fa-twitter icon-big"></i>
+    <div class="section-twitter content_resalt border-top"> 
         <div class="container">
             <div class="row">
                 <div class="col-md-12">

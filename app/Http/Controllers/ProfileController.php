@@ -10,15 +10,9 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        // Get user ID from session
+        
         $userId = session('user_id');
-
-        // Fetch bookings for the authenticated user only
-        $bookings = DB::table('operation')
-            ->where('user_id', $userId)
-            ->orderBy('id', 'desc')
-            ->paginate(10);
-
+        $bookings = DB::table('operation')->where('user_id', $userId) ->orderBy('id', 'desc')->paginate(10);
         return view('profile', ['bookings' => $bookings]);
     }
 
@@ -69,10 +63,7 @@ class ProfileController extends Controller
     {
         $userId = session('user_id');
 
-        $bookings = DB::table('operation')
-            ->where('user_id', $userId)
-            ->orderBy('id', 'desc')
-            ->get();
+        $bookings = DB::table('operation')->where('user_id', $userId)->orderBy('id', 'desc')->get();
 
         $totalServicesTaken = $bookings->count();
 
@@ -99,10 +90,8 @@ class ProfileController extends Controller
 
     public function ownerProfile()
     {
-        $totalSpentPerUser = DB::table('operation')
-            ->select('user_id', DB::raw('SUM(service_price) as total_spent'))
-            ->groupBy('user_id')
-            ->pluck('total_spent', 'user_id');
+        $totalSpentPerUser = DB::table('operation')->select('user_id', DB::raw('SUM(service_price) as total_spent'))
+            ->groupBy('user_id')->pluck('total_spent', 'user_id');
 
         $diamondCustomers = $totalSpentPerUser->filter(function ($totalSpent) {
             return $totalSpent >= 5000;
@@ -124,11 +113,8 @@ class ProfileController extends Controller
             return $totalSpent < 2000;
         })->count();
 
-        $serviceCategories = DB::table('operation')
-            ->join('service_catagories', 'operation.service_category', '=', 'service_catagories.name')
-            ->select('service_catagories.name', DB::raw('SUM(operation.service_price) as total_price'))
-            ->groupBy('service_catagories.name')
-            ->get();
+        $serviceCategories = DB::table('operation')->join('service_catagories', 'operation.service_category', '=', 'service_catagories.name')
+            ->select('service_catagories.name', DB::raw('SUM(operation.service_price) as total_price'))->groupBy('service_catagories.name')->get();
 
         $totalCustomers = DB::table('users')->where('type', 'user')->count();
         $totalServiceProviders = DB::table('service_providers')->count();

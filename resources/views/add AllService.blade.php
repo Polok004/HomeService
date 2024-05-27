@@ -150,7 +150,7 @@
 </section>
 
 <script>
-    // JavaScript to auto-generate slug
+   
     document.getElementById('name').addEventListener('input', function() {
         var name = this.value;
         var slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');

@@ -29,13 +29,13 @@ class SliderController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'nullable|boolean', // Nullable since it's not required
+            'status' => 'nullable|boolean', 
         ]);
 
         $imageName = Carbon::now()->timestamp . '.' . $request->image->extension();
         $request->image->move(public_path('images/Sliders'), $imageName);
 
-        $status = $request->input('status', false); // Default status to false if not provided
+        $status = $request->input('status', false); 
 
         $data = [
             'title' => $validatedData['title'],
@@ -85,27 +85,27 @@ class SliderController extends Controller
 
     public function deleteSlider($id)
     {
-        // Find the slider by ID
+    
         $slider = DB::table('sliders')->where('id', $id)->first();
     
-        // Check if the slider exists
+
         if ($slider) {
-            // Delete the slider's image from storage
+       
             if (file_exists(public_path('images/Sliders/' . $slider->image))) {
                 unlink(public_path('images/Sliders/' . $slider->image));
             }
     
-            // Delete the slider record from the database
+        
             DB::table('sliders')->where('id', $id)->delete();
     
-            // Flash a success message
+     
             Session::flash('message', 'Slider has been deleted successfully!');
         } else {
-            // Flash an error message if slider not found
+          
             Session::flash('error', 'Slider not found!');
         }
     
-        // Redirect back to the page
+
         return redirect()->back();
     }
     

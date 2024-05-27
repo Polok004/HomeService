@@ -23,8 +23,6 @@ class Home1Controller extends Controller
     public function adminHome()
     {
         $scatagories = DB::table('service_catagories')->paginate(10);
-
-        // Pass the $scatagories variable to the view
         return view('dashboard', ['scatagories' => $scatagories]);
         
     }

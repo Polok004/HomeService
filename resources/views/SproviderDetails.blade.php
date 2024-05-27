@@ -72,7 +72,7 @@
                                             <td>{{ $sprovider->Salary }}</td>
                                             <td>
                                             <a href="{{ route('Sproviderprofile', ['id' => $sprovider->id]) }}">
-    <i class="fa fa-user fa-2x text-primary"></i> <!-- Profile icon -->
+    <i class="fa fa-user fa-2x text-primary"></i>
 </a>
     
 
@@ -98,7 +98,6 @@
 <script>
     function confirmDelete(sproviderId) {
         if (confirm('Are you sure you want to delete this slider?')) {
-            // If user confirms, redirect to the delete route
             window.location.href = "{{ route('deleteSprovider', ['id' => ':sprovider_id']) }}".replace(':sprovider_id', sproviderId);
         }
     }

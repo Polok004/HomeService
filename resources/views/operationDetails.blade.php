@@ -131,16 +131,16 @@
                                     
 
                                     <div class="form-group">
-    <label for="category" class="control-label col-sm-3">Service Provider:</label>
-    <div class="col-sm-9">
-        <select name="category" id="category" class="form-control">
-            @if($bookings->sprovider)
-                <option value="{{ $bookings->sprovider }}">{{ $bookings->sprovider }}</option>
-            @else
-            <option value="">Select a service provider</option> <!-- Add an empty default option -->
-            @endif
-            @foreach($sprovider as $provider)
-                @if($provider->Service_Catagory == $bookings->service_category)
+                                        <label for="category" class="control-label col-sm-3">Service Provider:</label>
+                                          <div class="col-sm-9">
+                                            <select name="category" id="category" class="form-control">
+                                             @if($bookings->sprovider)
+                                                <option value="{{ $bookings->sprovider }}">{{ $bookings->sprovider }}</option>
+                                               @else
+                                                 <option value="">Select a service provider</option> <!-- Add an empty default option -->
+                                             @endif
+                                         @foreach($sprovider as $provider)
+                                         @if($provider->Service_Catagory == $bookings->service_category)
                     <option value="{{ $provider->name }}">{{ $provider->name }}</option>
                 @endif
             @endforeach
